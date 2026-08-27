@@ -1,5 +1,5 @@
-import { BellIcon, UserIcon } from "@heroicons/react/24/outline";
 import { VertexLogo } from "@/components/brand/VertexLogo";
+import { NavAuthActions } from "@/components/navigation/NavAuthActions";
 import { cn } from "@/lib/cn";
 
 export type NavLink = {
@@ -43,23 +43,7 @@ export function Navbar({
     </nav>
   );
 
-  const actions = showActions ? (
-    <div className="flex items-center gap-4">
-      <button
-        type="button"
-        aria-label="Notifications"
-        className="rounded-sm p-1 text-neutral-700 transition-colors hover:text-neutral-900"
-      >
-        <BellIcon className="h-6 w-6" strokeWidth={2} />
-      </button>
-      <div
-        className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-neutral-200 to-neutral-300"
-        aria-hidden="true"
-      >
-        <UserIcon className="h-5 w-5 text-neutral-600" strokeWidth={2} />
-      </div>
-    </div>
-  ) : null;
+  const actions = showActions ? <NavAuthActions /> : null;
 
   if (layout === "homepage") {
     return (
