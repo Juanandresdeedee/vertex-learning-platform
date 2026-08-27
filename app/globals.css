@@ -21,6 +21,7 @@
   --color-lesson-500: #3b82f6;
   --color-success-500: #22c55e;
   --color-success-600: #16a34a;
+  --color-page-cream: #fdfcf9;
 
   --font-family-display: var(--font-display), ui-serif, Georgia, serif;
   --font-family-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
@@ -58,4 +59,15 @@ body {
   background-color: var(--color-neutral-50);
   color: var(--color-neutral-900);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+.page-texture {
+  background-color: var(--color-page-cream);
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 11px,
+    rgb(15 23 42 / 0.015) 11px,
+    rgb(15 23 42 / 0.015) 12px
+  );
 }

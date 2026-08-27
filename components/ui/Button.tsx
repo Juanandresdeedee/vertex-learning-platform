@@ -9,6 +9,8 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant;
   size?: ButtonSize;
   children: ReactNode;
+  trailingIcon?: ReactNode;
+  showVariantIcon?: boolean;
 };
 
 const variantStyles: Record<ButtonVariant, string> = {
@@ -32,6 +34,8 @@ export function Button({
   className,
   children,
   disabled,
+  trailingIcon,
+  showVariantIcon = true,
   ...props
 }: ButtonProps) {
   return (
@@ -46,13 +50,14 @@ export function Button({
       )}
       {...props}
     >
-      {variant === "tertiary" && (
+      {showVariantIcon && variant === "tertiary" && (
         <ArrowTopRightOnSquareIcon className="h-4 w-4 shrink-0" strokeWidth={2} />
       )}
-      {variant === "text" && (
+      {showVariantIcon && variant === "text" && (
         <PlayCircleIcon className="h-4 w-4 shrink-0" strokeWidth={2} />
       )}
       {children}
+      {trailingIcon}
     </button>
   );
 }
