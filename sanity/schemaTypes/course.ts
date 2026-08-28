@@ -53,12 +53,20 @@ export const courseType = defineType({
     }),
 
     defineField({
-      name: 'image',
-      title: 'Course Image',
+      name: 'coverImage',
+      title: 'Cover Image',
       type: 'image',
       options: {
         hotspot: true,
       },
     }),
   ],
+
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'description',
+      media: 'coverImage',
+    },
+  },
 })
