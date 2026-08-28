@@ -13,9 +13,43 @@ export const courseType = defineType({
     }),
 
     defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'title',
+      },
+    }),
+
+    defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
+    }),
+
+    defineField({
+      name: 'duration',
+      title: 'Duration',
+      type: 'number',
+    }),
+
+    defineField({
+      name: 'instructor',
+      title: 'Instructor',
+      type: 'reference',
+      to: [{ type: 'instructor' }],
+    }),
+
+    defineField({
+      name: 'lessons',
+      title: 'Lessons',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{ type: 'lesson' }],
+        },
+      ],
     }),
 
     defineField({
