@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { CourseCardData, CourseDetail, CourseModule } from "@/types/course";
+import type { CourseCardData, CourseDetail, CourseInstructor, CourseModule } from "@/types/course";
 import {
   COURSE_BY_SLUG_QUERY,
   COURSES_FOR_HOMEPAGE_QUERY,
@@ -36,7 +36,7 @@ type RawCourseDetail = RawCourseCard & {
   _id: string;
   popular?: boolean;
   studentCount: number;
-  instructor?: { name: string; slug: string };
+  instructor?: CourseInstructor;
   learningOutcomes?: Array<{
     icon?: string;
     title: string;

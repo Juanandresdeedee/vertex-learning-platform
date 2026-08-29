@@ -38,6 +38,9 @@ export function CourseHero({ course }: CourseHeroProps) {
   const coverUrl = course.coverImage
     ? urlFor(course.coverImage).width(640).height(640).url()
     : null;
+  const instructorPhotoUrl = course.instructor?.photo
+    ? urlFor(course.instructor.photo).width(72).height(72).url()
+    : null;
 
   return (
     <section className="grid gap-8 lg:grid-cols-[280px_1fr] lg:items-start">
@@ -70,12 +73,23 @@ export function CourseHero({ course }: CourseHeroProps) {
         </p>
 
         {course.instructor && (
-          <p className="text-sm text-neutral-500">
-            Instructor:{" "}
-            <span className="font-medium text-neutral-700">
-              {course.instructor.name}
+          <div className="flex items-center gap-2 text-sm text-neutral-500">
+            {instructorPhotoUrl && (
+              <Image
+                src={instructorPhotoUrl}
+                alt={course.instructor.name}
+                width={36}
+                height={36}
+                className="h-9 w-9 shrink-0 rounded-full object-cover"
+              />
+            )}
+            <span>
+              Instructor:{" "}
+              <span className="font-medium text-neutral-700">
+                {course.instructor.name}
+              </span>
             </span>
-          </p>
+          </div>
         )}
 
         <div className="flex flex-wrap items-center gap-4">

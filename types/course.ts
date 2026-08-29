@@ -22,6 +22,7 @@ export type LearningOutcome = {
 export type CourseInstructor = {
   name: string;
   slug: string;
+  photo?: SanityImageSource;
 };
 
 export type CourseDetail = {

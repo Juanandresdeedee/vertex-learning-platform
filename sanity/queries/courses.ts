@@ -30,7 +30,8 @@ export const COURSE_BY_SLUG_QUERY = defineQuery(/* groq */ `
     studentCount,
     instructor->{
       name,
-      "slug": slug.current
+      "slug": slug.current,
+      photo
     },
     learningOutcomes[]{
       icon,
