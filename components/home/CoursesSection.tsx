@@ -19,7 +19,7 @@ export function CoursesSection({ courses }: CoursesSectionProps) {
             All Courses
           </h2>
           <Link
-            href="/"
+            href="/courses"
             className="inline-flex items-center gap-1 text-sm font-medium text-primary-500 transition-colors hover:text-primary-400"
           >
             View all courses

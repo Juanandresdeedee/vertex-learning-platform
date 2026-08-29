@@ -2,6 +2,7 @@ import "server-only";
 
 import type { CourseCardData, CourseDetail, CourseInstructor, CourseModule } from "@/types/course";
 import {
+  ALL_COURSES_QUERY,
   COURSE_BY_SLUG_QUERY,
   COURSES_FOR_HOMEPAGE_QUERY,
   COURSE_SLUGS_QUERY,
@@ -20,6 +21,7 @@ type RawModule = {
     title: string;
     slug: string;
     duration?: number;
+    freePreview?: boolean;
   }>;
 };
 
@@ -55,6 +57,7 @@ function normalizeModules(modules: RawModule[] = []): CourseModule[] {
       title: lesson.title,
       slug: lesson.slug,
       duration: lesson.duration ?? 0,
+      freePreview: lesson.freePreview,
     }));
 
     return {
@@ -113,6 +116,13 @@ export async function getHomepageCourses(): Promise<CourseCardData[]> {
   return HOMEPAGE_COURSE_SLUGS.map((slug) => bySlug.get(slug)).filter(
     (course): course is CourseCardData => course != null,
   );
+}
+
+export async function getAllCourses(): Promise<CourseCardData[]> {
+  const client = getServerClient();
+  const courses = await client.fetch<RawCourseCard[]>(ALL_COURSES_QUERY);
+
+  return courses.map(toCourseCard);
 }
 
 export async function getCourseBySlug(slug: string): Promise<CourseDetail | null> {

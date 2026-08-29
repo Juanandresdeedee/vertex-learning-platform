@@ -18,6 +18,10 @@ export const COURSES_FOR_HOMEPAGE_QUERY = defineQuery(/* groq */ `
   *[_type == "course" && slug.current in $slugs] ${courseCardProjection}
 `);
 
+export const ALL_COURSES_QUERY = defineQuery(/* groq */ `
+  *[_type == "course" && defined(slug.current)] | order(title asc) ${courseCardProjection}
+`);
+
 export const COURSE_BY_SLUG_QUERY = defineQuery(/* groq */ `
   *[_type == "course" && slug.current == $slug][0]{
     _id,
@@ -44,7 +48,8 @@ export const COURSE_BY_SLUG_QUERY = defineQuery(/* groq */ `
       "lessons": lessons[]->{
         title,
         "slug": slug.current,
-        duration
+        duration,
+        freePreview
       }
     }
   }
