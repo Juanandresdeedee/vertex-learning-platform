@@ -1,8 +1,16 @@
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 import { CatalogCourseCard } from "@/components/cards/CatalogCourseCard";
-import { homepageCourses } from "@/lib/homepage-data";
+import { formatDuration } from "@/lib/format-duration";
+import { formatLevel } from "@/lib/format-level";
+import { urlFor } from "@/sanity/lib/image";
+import type { CourseCardData } from "@/types/course";
 
-export function CoursesSection() {
+type CoursesSectionProps = {
+  courses: CourseCardData[];
+};
+
+export function CoursesSection({ courses }: CoursesSectionProps) {
   return (
     <section className="px-6 pb-16 md:px-10">
       <div className="mx-auto max-w-6xl">
@@ -10,27 +18,35 @@ export function CoursesSection() {
           <h2 className="font-display text-display-2 font-bold leading-[44px] text-neutral-900">
             All Courses
           </h2>
-          <a
-            href="#"
+          <Link
+            href="/"
             className="inline-flex items-center gap-1 text-sm font-medium text-primary-500 transition-colors hover:text-primary-400"
           >
             View all courses
             <ArrowRightIcon className="h-4 w-4" strokeWidth={2} />
-          </a>
+          </Link>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {homepageCourses.map((course) => (
-            <CatalogCourseCard
-              key={course.id}
-              logo={course.logo}
-              title={course.title}
-              description={course.description}
-              level={course.level}
-              duration={course.duration}
-              moduleCount={course.moduleCount}
-            />
-          ))}
+          {courses.map((course) => {
+            const coverImageUrl = course.coverImage
+              ? urlFor(course.coverImage).width(192).height(192).url()
+              : undefined;
+
+            return (
+              <CatalogCourseCard
+                key={course.slug}
+                coverImageUrl={coverImageUrl}
+                coverImageAlt={course.title}
+                title={course.title}
+                description={course.summary}
+                level={formatLevel(course.level)}
+                duration={formatDuration(course.totalDuration)}
+                moduleCount={`${course.moduleCount} modules`}
+                href={`/courses/${course.slug}`}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

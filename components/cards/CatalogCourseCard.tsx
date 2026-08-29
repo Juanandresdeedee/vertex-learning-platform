@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Image from "next/image";
 import {
   ChartBarIcon,
   ClockIcon,
@@ -7,7 +8,9 @@ import {
 import { cn } from "@/lib/cn";
 
 export type CatalogCourseCardProps = {
-  logo: ReactNode;
+  logo?: ReactNode;
+  coverImageUrl?: string;
+  coverImageAlt?: string;
   title: string;
   description: string;
   level: string;
@@ -28,6 +31,8 @@ function MetaItem({ icon: Icon, label }: { icon: typeof ClockIcon; label: string
 
 export function CatalogCourseCard({
   logo,
+  coverImageUrl,
+  coverImageAlt,
   title,
   description,
   level,
@@ -44,7 +49,21 @@ export function CatalogCourseCard({
         className,
       )}
     >
-      <div className="mb-6 flex justify-center">{logo}</div>
+      <div className="mb-6 flex justify-center">
+        {coverImageUrl ? (
+          <div className="relative h-24 w-24 overflow-hidden rounded-md bg-neutral-100">
+            <Image
+              src={coverImageUrl}
+              alt={coverImageAlt ?? title}
+              fill
+              className="object-cover"
+              sizes="96px"
+            />
+          </div>
+        ) : (
+          logo
+        )}
+      </div>
       <div className="flex flex-1 flex-col gap-3">
         <h3 className="font-display text-heading-1 font-semibold leading-[36px] text-neutral-900">
           {title}
