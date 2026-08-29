@@ -4,6 +4,7 @@ export type CourseLesson = {
   title: string;
   slug: string;
   duration: number;
+  freePreview?: boolean;
 };
 
 export type CourseModule = {

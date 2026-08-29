@@ -8,6 +8,8 @@ import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
 import { Navbar } from "@/components/navigation/Navbar";
 import { getCourseBySlug } from "@/lib/sanity/courses";
 
+export const dynamic = "force-dynamic";
+
 type CoursePageProps = {
   params: Promise<{ slug: string }>;
 };

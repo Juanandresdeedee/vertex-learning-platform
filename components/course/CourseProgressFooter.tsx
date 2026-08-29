@@ -6,9 +6,12 @@ export function CourseProgressFooter() {
   return (
     <div className="sticky bottom-0 border-t border-neutral-200 bg-white/95 px-6 py-4 shadow-lg backdrop-blur md:px-10">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="min-w-0 flex-1">
-          <p className="text-sm font-medium text-neutral-900">Your Progress</p>
-          <ProgressBar value={35} label="35% complete" className="mt-2 max-w-md" />
+        <div className="flex min-w-0 flex-1 flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
+          <div className="shrink-0">
+            <p className="text-sm text-neutral-500">Your Progress</p>
+            <p className="text-sm font-semibold text-neutral-900">35% complete</p>
+          </div>
+          <ProgressBar value={35} className="min-w-0 flex-1 sm:max-w-md" />
         </div>
         <Button
           variant="primary"

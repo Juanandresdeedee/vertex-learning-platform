@@ -4,6 +4,8 @@ import { HomeFooter } from "@/components/home/HomeFooter";
 import { Navbar } from "@/components/navigation/Navbar";
 import { getHomepageCourses } from "@/lib/sanity/courses";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const courses = await getHomepageCourses();
 
