@@ -9,11 +9,15 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.116",
+    "@ai-sdk/mcp": "^1.0.77",
+    "@ai-sdk/react": "^3.0.279",
     "@clerk/nextjs": "^7.8.2",
     "@heroicons/react": "^2.2.0",
     "@portabletext/react": "^8.0.1",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^5.31.2",
+    "ai": "^6.0.276",
     "next": "16.3.2",
     "next-sanity": "^13.3.3",
     "posthog-js": "^1.422.3",
