@@ -26,12 +26,21 @@ type SearchResult = {
   courseTitle?: string;
   courseSlug?: string;
   duration?: number;
+  startSeconds?: number;
   reason?: string;
 };
 
 type SearchResultsOutput = {
   results: SearchResult[];
 };
+
+function formatTimestamp(seconds: number): string {
+  const safeSeconds = Math.max(0, Math.floor(seconds));
+  const minutes = Math.floor(safeSeconds / 60);
+  const remainingSeconds = safeSeconds % 60;
+
+  return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+}
 
 function SearchResultCard({
   result,
@@ -41,7 +50,9 @@ function SearchResultCard({
   const href =
     result.type === "course"
       ? `/courses/${result.slug}`
-      : `/lessons/${result.slug}`;
+      : result.startSeconds != null
+        ? `/lessons/${result.slug}?t=${Math.floor(result.startSeconds)}`
+        : `/lessons/${result.slug}`;
 
   return (
     <a
@@ -61,6 +72,13 @@ function SearchResultCard({
               <span className="inline-flex items-center gap-1 text-xs text-neutral-500">
                 <ClockIcon className="h-4 w-4" strokeWidth={2} />
                 {formatDuration(result.duration)}
+              </span>
+            ) : null}
+
+            {result.type === "lesson" &&
+            result.startSeconds != null ? (
+              <span className="text-xs font-medium text-primary-500">
+                Starts at {formatTimestamp(result.startSeconds)}
               </span>
             ) : null}
           </div>
@@ -284,7 +302,7 @@ export function ContextSearch() {
                   <div className="grid gap-4">
                     {searchResults.map((result) => (
                       <SearchResultCard
-                        key={`${result.type}-${result.slug}`}
+                        key={`${result.type}-${result.slug}-${result.startSeconds ?? 0}`}
                         result={result}
                       />
                     ))}
