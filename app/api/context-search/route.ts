@@ -4,14 +4,39 @@ import {
   convertToModelMessages,
   stepCountIs,
   streamText,
+  tool,
   type UIMessage,
 } from "ai";
+import { z } from "zod";
 
 export const runtime = "nodejs";
 
 type ContextSearchRequest = {
   messages: UIMessage[];
 };
+
+const presentSearchResults = tool({
+  description:
+    "Present grounded Vertex course or lesson search results to the user as structured data after you have verified them using Sanity Context tools.",
+  inputSchema: z.object({
+    results: z.array(
+      z.object({
+        type: z.enum(["course", "lesson"]),
+        title: z.string(),
+        slug: z.string(),
+        courseTitle: z.string().optional(),
+        courseSlug: z.string().optional(),
+        duration: z.number().optional(),
+        reason: z.string().optional(),
+      }),
+    ),
+  }),
+  execute: async ({ results }) => {
+    return {
+      results,
+    };
+  },
+});
 
 async function fetchInitialContext(): Promise<string> {
   const mcpUrl = process.env.SANITY_CONTEXT_MCP_URL;
@@ -117,41 +142,28 @@ Prefer grounded answers based on the available Sanity content.
 Do not invent courses, lessons, instructors, slugs, timestamps, or learning
 material that does not exist in the dataset.
 
-When you mention a course, query and use its real slug and format the course
-title as a Markdown link using this relative URL pattern:
+When a user asks for courses, lessons, or content recommendations:
 
-/courses/{course-slug}
+1. Use Sanity Context tools to verify the relevant content.
+2. Retrieve the real title and slug for every result.
+3. When useful, also retrieve course title, course slug, duration, module,
+   instructor, or other relevant context.
+4. After verifying the results, call the presentSearchResults tool with the
+   structured results.
+5. Keep the accompanying prose concise.
 
-Example:
+For course results:
+- type must be "course"
+- title must be the real course title
+- slug must be the real course slug
 
-[Building AI Apps with LLMs](/courses/building-ai-apps-with-llms)
+For lesson results:
+- type must be "lesson"
+- title must be the real lesson title
+- slug must be the real lesson slug
+- include courseTitle and courseSlug when available
 
-When you mention a lesson, query and use its real slug and format the lesson
-title as a Markdown link using this relative URL pattern:
-
-/lessons/{lesson-slug}
-
-Example:
-
-[Building an agent loop](/lessons/building-ai-apps-with-llms-agent-loops)
-
-If retrieved content explicitly provides a relevant start time in seconds,
-you may link directly to that point using:
-
-/lessons/{lesson-slug}?t={seconds}
-
-Do not invent timestamps. Only use a start time when the retrieved data
-explicitly supports it.
-
-When useful, include:
-- course title
-- lesson title
-- instructor
-- duration
-- module
-- a short explanation of why the result is relevant
-
-Prefer concise, useful search results rather than long general explanations.
+Do not call presentSearchResults with guessed data.
 
 Sanity schema context:
 
@@ -160,9 +172,12 @@ ${initialContext}
 
       messages: await convertToModelMessages(body.messages),
 
-      tools: contextTools,
+      tools: {
+        ...contextTools,
+        presentSearchResults,
+      },
 
-      stopWhen: stepCountIs(5),
+      stopWhen: stepCountIs(6),
 
       onError: ({ error }) => {
         console.error("Context Search stream error:", error);
